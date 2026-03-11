@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36616.10 d17.14
+VisualStudioVersion = 17.14.36616.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaundryAppointmentSystem.API", "LaundryAppointmentSystem.API\LaundryAppointmentSystem.API.csproj", "{C1143AF1-CE89-409E-B93F-42164B6EC55D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaundryAppointmentSystem.CORE", "LaundryAppointmentSystem.CORE\LaundryAppointmentSystem.CORE.csproj", "{2BAB634A-2596-4A68-B3CE-56D0F3C85764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaundryAppointmentSystem.BUSINESS", "LaundryAppointmentSystem.BUSINESS\LaundryAppointmentSystem.BUSINESS.csproj", "{B31A8889-A46B-4F4D-93FE-DAFBA23582CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2BAB634A-2596-4A68-B3CE-56D0F3C85764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BAB634A-2596-4A68-B3CE-56D0F3C85764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BAB634A-2596-4A68-B3CE-56D0F3C85764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B31A8889-A46B-4F4D-93FE-DAFBA23582CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B31A8889-A46B-4F4D-93FE-DAFBA23582CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B31A8889-A46B-4F4D-93FE-DAFBA23582CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B31A8889-A46B-4F4D-93FE-DAFBA23582CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

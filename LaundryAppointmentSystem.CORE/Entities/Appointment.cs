@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LaundryAppointmentSystem.CORE.Entities
 {
+
 	public class Appointment
 	{
 		public int ID { get; set; }
