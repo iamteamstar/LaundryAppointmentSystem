@@ -68,7 +68,29 @@ namespace LaundryAppointmentSystem.BUSINESS.Services
 		
 		public IQueryable<LoundryMachine> GetAvailableMachines(DateTime avalabilityDate)
 		{
-			throw new NotImplementedException();
+			List<LoundryMachine> machineList = new List<LoundryMachine>()
+			{
+				new LoundryMachine{ID=4,Name="machine4",IsActive=false},
+				new LoundryMachine{ID=5,Name="machine5",IsActive=true},
+				new LoundryMachine{ID=6,Name="machine6",IsActive=true}
+			};
+
+			List<Appointment> mockAppointment = new List<Appointment>()
+			{
+				new Appointment()
+				{
+					ID=1,
+					MachineID=5,
+					StartDate=new DateTime(2026,09,21,14,0,0),
+					FinishDate=new DateTime(2026,09,21,16,0,0)
+				}
+			};
+			var machineStatu = machineList.Where(x => x.IsActive == true && !mockAppointment.Any(y =>
+				y.MachineID == x.ID && 	y.StartDate <= avalabilityDate && 
+				y.FinishDate >= avalabilityDate)).AsQueryable();//metot imzası
+
+
+			return machineStatu;
 		}
 	}
 }
