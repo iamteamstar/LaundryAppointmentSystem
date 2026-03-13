@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LaundryAppointmentSystem.CORE.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -9,7 +10,7 @@ namespace LaundryAppointmentSystem.CORE.IServices
 {
 	public interface IAppointmentService
 	{
-		IQueryable<Machine> GetAvailableMachines(DateTime avalabilityDate);
-		ValueTask<string> AddAppointment(int userId,int machineId,DateTime startDateTime, DateTime finishLongDateTime,DateTime finishShortDateTime);
+		IQueryable<LoundryMachine> GetAvailableMachines(DateTime avalabilityDate);
+		ValueTask<string> AddAppointment(int userId,int machineId,DateTime startDateTime, DateTime finishDateTime);
 	}
 }

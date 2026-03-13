@@ -1,44 +1,72 @@
 ﻿using LaundryAppointmentSystem.CORE.IServices;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using LaundryAppointmentSystem.CORE.Entities;
 
 
 namespace LaundryAppointmentSystem.BUSINESS.Services
 {
 	public class AppointmentService : IAppointmentService
 	{
-		public async ValueTask<string>AddAppointment(int userId, int machineId, DateTime startDateTime, DateTime finishLongDateTime, DateTime finishShortDateTime)
+		public async ValueTask<string>AddAppointment(int studentId, int machineId, DateTime startDateTime, DateTime finishDateTime)
 		{
 			//burada amacım kullanıcı rezervasyon yapabileceği tarihleri görmesi. bunun için bir datetime oluşturmuştuk. kullanıcı buraya geldiyse hakkı var mı yok mu kontrol edelim
 			//kontrol için önce kullanıcıyı bulalım ya da bunu studentservive yapsa daha doğru mu olur?
-			//biz öncelikle kullanıcının şuandan önceye almasını engelleyelim.
-			startDateTime = DateTime.Now;
-			finishLongDateTime = startDateTime.AddHours(2).AddMinutes(30);
-			finishShortDateTime=startDateTime.AddMinutes(30);
-			TimeSpan durationLong=finishLongDateTime-startDateTime;
-			TimeSpan durationShort=finishShortDateTime-startDateTime;
-			if (startDateTime<DateTime.Now)
+			//kural-1: öğrenci geçmiş zamana randevu alamaz
+			TimeSpan totalDateTime = finishDateTime-startDateTime;//Alternatif:TimeSpan totalDateTime = finishDateTime.Subtract(startDateTime);
+			if (startDateTime <= DateTime.Now || finishDateTime <= startDateTime)
 			{
-				return  "geçmiş zamana rezervasyon alamazsın!";
+				return "lütfen geçerli aralıkta randevu almaya çalışın";
 			}
-			if (startDateTime >= finishLongDateTime || finishLongDateTime < DateTime.Now)
+			else if (totalDateTime.TotalMinutes <= 29 || totalDateTime.TotalMinutes >= 151)
 			{
-				return "geçerli tarih girin!";
+				return "maks 150 ve min 30 dk lik randevu oluşturabilirsiniz";
+			}
+			//kural-2:istediği saaatte makineler müsait değilse yine randevu oluşturamaz. sıra sıra gidelim
+			// Sanki veritabanından (DbSet üzerinden) makineleri çekmişiz gibi düşünelim:
+			List<LoundryMachine> mockMachines = new List<LoundryMachine>
+			{
+			new LoundryMachine	{ID=1,Name="machine1",IsActive=true},
+			new LoundryMachine	{ID=2,Name="machine2",IsActive=true},
+			new LoundryMachine	{ID=3,Name="machine3",IsActive=false}//bozuk makine
+			};
+			var machine = mockMachines.FirstOrDefault(x => x.ID == machineId);
 
-			}
-			else if (durationLong.TotalMinutes>150|| durationShort.TotalMinutes <30)
+			if (machine == null)
+				return "makine müsait değil";
+			else if (machine.IsActive == false)
+				return "makine bozuk";
+
+			List<Appointment> mockAppointment = new List<Appointment>()
 			{
-				return "lütfen 30 dk ile 150 dk arası bir zaman seçin!";
+				new Appointment()
+				{
+					ID=1,
+					MachineID=1,
+					StartDate=new DateTime(2026,09,21,14,0,0),
+					FinishDate=new DateTime(2026,09,21,16,0,0)	
+				}
+			};
+			bool statusAppointment=mockAppointment.Any(x=>x.MachineID==machineId&&x.StartDate<finishDateTime&&x.FinishDate>startDateTime);
+
+			if (statusAppointment)
+			{
+				return "Seçtiğiniz makine bu saatlerde doludur, lütfen başka bir saat seçin.";
 			}
-			else
-				return "rezervasyon olusturuldu";
+			int studentAppointCount=mockAppointment.Count(x=>x.StudentID==studentId);
+			if (studentAppointCount >= 2)
+			{
+				return "maalesef hakkınız yok";
+			}
+			return "Randevunuz başarıyla oluşturuldu!";
 		}
-
-		public IQueryable<Machine> GetAvailableMachines(DateTime avalabilityDate)
+		
+		public IQueryable<LoundryMachine> GetAvailableMachines(DateTime avalabilityDate)
 		{
 			throw new NotImplementedException();
 		}

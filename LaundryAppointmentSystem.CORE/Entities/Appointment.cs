@@ -15,6 +15,6 @@ namespace LaundryAppointmentSystem.CORE.Entities
 		public int StudentID { get; set; }
 		public Student Students { get; set; }
 		public int MachineID { get; set; }
-		public Machine Machine { get; set; }
+		public LoundryMachine Machine { get; set; }
 	}
 }
